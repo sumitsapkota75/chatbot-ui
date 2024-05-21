@@ -1,4 +1,5 @@
 "use client"
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import React, { useState } from 'react'
 import { IoSend } from "react-icons/io5";
@@ -18,7 +19,8 @@ const Home = () => {
     };
 
     const hasConversationStarted = messages.length > 1;
-
+    const { data: session } = useSession()
+    console.log({session})
     return (
         <div className='flex flex-col justify-between h-full w-full bg-white'>
             <div className='flex flex-col flex-1 items-center justify-center overflow-auto p-4'>
