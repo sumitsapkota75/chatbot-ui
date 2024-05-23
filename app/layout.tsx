@@ -1,5 +1,6 @@
 import "./globals.css";
 import NextAuthSessionProvider from "@/context/sessionContext";
+import TanstackProvider from "@/context/tanstackContext";
 import { getServerSession } from "next-auth";
 
 export default async function LoginLayout({
@@ -11,9 +12,11 @@ export default async function LoginLayout({
   return (
     <html lang="en">
       <body className="h-screen">
+      <TanstackProvider>
       <NextAuthSessionProvider session={session}>
           <main>{children}</main>
       </NextAuthSessionProvider>
+      </TanstackProvider>
       </body>
     </html>
   );
