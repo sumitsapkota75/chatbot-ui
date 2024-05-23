@@ -10,7 +10,7 @@ const data = [
 
 const SideNav = () => {
   return (
-    <div className="h-full w-60 bg-gray-200 p-4 overflow-y-auto">
+    <div className="h-screen w-60 bg-gray-200 p-4 overflow-y-auto" style={{ height: 'calc(100vh - 72px)'}}>
       <div className="menu-items">
         <div className="menu-item flex flex-row mb-4 p-2 rounded hover:bg-gray-400 cursor-pointer">
           <div className="font-normal">Create a new chat</div>
