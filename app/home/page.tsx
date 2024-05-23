@@ -5,8 +5,9 @@ import { IoSend } from "react-icons/io5";
 import Image from "next/image";
 import "../globals.css";
 import { useSession } from "next-auth/react";
-import { useMutation } from "@tanstack/react-query";
 import { chat } from "@/services/chat";
+import Loader from "@/components/loader";
+
 
 interface Message {
   text: string;
@@ -33,18 +34,21 @@ const Home = () => {
       text: input,
     };
     try {
-      setLoading(true);
-      const response = await chat(data);
       if (input.trim()) {
         const userMessage: Message = { text: input, isUser: true };
-        const botResponse: Message = { text: response.response, isUser: false };
-
         setMessages((prevMessages) => [
           ...prevMessages,
           userMessage,
-          botResponse,
         ]);
         setInput("");
+        setLoading(true);
+        const response = await chat(data);
+        const botResponse: Message = { text: response.response, isUser: false };
+        setLoading(false)
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          botResponse,
+        ]);
       }
     } catch (error) {
       console.log("Error occured.", error);
@@ -83,7 +87,7 @@ const Home = () => {
             <div
               key={index}
               className={`flex items-start my-2 ${
-                message.isUser ? "justify-start" : "justify-end"
+                message.isUser ? "justify-start" : "justify-start"
               }`}
             >
               <Image
@@ -105,6 +109,7 @@ const Home = () => {
             </div>
           ))}
           <div ref={messagesEndRef} />
+          {loading && <Loader/>}
         </div>
       </div>
       <div className="flex justify-center items-center max-w-xl w-full mx-auto bg-white p-4 rounded-xl border shadow-md">
