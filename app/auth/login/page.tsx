@@ -1,28 +1,27 @@
-"use client" // Necessary for `signIn` to work on the client-side
-
-import Button from '@/components/button';
-import React, { useEffect } from 'react';
+"use client"
+import React from 'react';
+import { signIn } from 'next-auth/react';
 import { RiGoogleLine } from 'react-icons/ri';
-import { signIn, useSession } from "next-auth/react";
+import Image from 'next/image';
 
 const Login = () => {
-
-  const HandleLogin = async () => {
-    await signIn("google",{
+  const handleLogin = async () => {
+    await signIn("google", {
       callbackUrl: "/home"
     });
   };
+
   return (
-    <div>
-      <Button
-        text="Login with google"
-        width="100px"
-        isLoading={false}
-        leadingIcon={<RiGoogleLine />}
-        onClick={HandleLogin}
-      />
+    <div className="flex flex-col h-screen justify-center items-center bg-gray-100">
+      <div className="text-4xl font-bold mb-8">ChatGPT</div>
+      <div className="mb-8">
+        <Image src="/chatgpt.png" alt="ChatGPT Logo" width={100} height={100} />
+      </div>
+      <button onClick={handleLogin} className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg flex items-center">
+        <RiGoogleLine className="mr-2" /> Login with Google
+      </button>
     </div>
   );
 };
 
-export default (Login);
+export default Login;

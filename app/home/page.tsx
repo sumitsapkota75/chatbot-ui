@@ -40,7 +40,7 @@ const Home = () => {
   const hasConversationStarted = messages.length > 0;
 
   return (
-    <div className='flex flex-col h-full w-full bg-white'>
+    <div className='flex flex-col h-full w-full bg-white'style={{ height: 'calc(100vh - 72px)'}}>
       <div className='flex flex-col flex-1 items-center justify-center overflow-auto p-4'>
         {!hasConversationStarted && (
           <div className='flex flex-col items-center'>

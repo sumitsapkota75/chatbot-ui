@@ -22,7 +22,7 @@ export default async function RootLayout({
   return (
     <main>
       <Header />
-      <div className="flex h-screen overflow-hidden">
+      <div className="flex ">
         <SideNav />
         <main className="flex-1">{children}</main>
       </div>
