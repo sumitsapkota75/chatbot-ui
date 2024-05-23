@@ -4,7 +4,6 @@ import Button from '@/components/button';
 import React, { useEffect } from 'react';
 import { RiGoogleLine } from 'react-icons/ri';
 import { signIn, useSession } from "next-auth/react";
-import LoginLayout from './layout';
 
 const Login = () => {
 

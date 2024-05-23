@@ -1,9 +1,11 @@
 "use client"
 
-import { useSession } from 'next-auth/react';
-import Image from 'next/image';
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { IoSend } from "react-icons/io5";
+import Image from 'next/image';
+import '../globals.css';
+import { useSession } from 'next-auth/react';
+
 
 interface Message {
   text: string;
@@ -11,9 +13,7 @@ interface Message {
 }
 
 const Home = () => {
-  const { data: session } = useSession();
-  const userImage = session?.user?.image || "/default-user.png"; // default user image if none exists
-
+    const { data: session } = useSession();
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
 
@@ -36,7 +36,7 @@ const Home = () => {
       setInput('');
     }
   };
-
+  const userImage = session?.user?.image || "/default-user.png";
   const hasConversationStarted = messages.length > 0;
 
   return (
@@ -53,14 +53,18 @@ const Home = () => {
         <div className="flex flex-col flex-1 w-full max-w-xl mt-4 mb-16 overflow-y-auto p-4 rounded-xl">
           {messages.map((message, index) => (
             <div key={index} className={`flex items-start my-2 ${message.isUser ? 'justify-start' : 'justify-end'}`}>
-              {message.isUser ? (
-                <Image src={userImage} alt='user-image' width={40} height={40} className="rounded-full mr-2" />
-              ) : (
-                <Image src="/chatgpt.png" alt='chatgpt-image' width={40} height={40} className="rounded-full mr-2" />
-              )}
-              <div className={`p-2 rounded ${message.isUser ? 'bg-blue-200 text-left' : 'bg-gray-200 text-left'} animate-slide-in`}>
-                {message.text}
-              </div>
+            <Image
+            src={message.isUser ? userImage : "/chatgpt.png"}
+            alt={message.isUser ? 'user-image' : 'chatgpt-image'}
+            width={40}
+            height={40}
+            className="rounded-full mr-2"
+          />
+            <div
+              className={`my-2 p-2 rounded ${message.isUser ? 'bg-blue-200 text-left' : 'bg-gray-200 text-left'} animate-slide-in`}
+            >
+              {message.text}
+            </div>
             </div>
           ))}
           <div ref={messagesEndRef} />
