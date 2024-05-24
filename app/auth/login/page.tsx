@@ -8,6 +8,8 @@ const Login = () => {
   const handleLogin = async () => {
     await signIn("google", {
       callbackUrl: "/home"
+    }).then((data)=>{
+      console.log({data})
     });
   };
 

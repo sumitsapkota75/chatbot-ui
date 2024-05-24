@@ -7,6 +7,7 @@ import "../globals.css";
 import { useSession } from "next-auth/react";
 import { chat } from "@/services/chat";
 import Loader from "@/components/loader";
+import { CreateUser, IUser } from "@/services/user";
 
 
 interface Message {
@@ -58,12 +59,34 @@ const Home = () => {
     }
   };
 
+  console.log({session})
   const userImage = session?.user?.image || "/default-user.png";
   const hasConversationStarted = messages.length > 0;
+  
+  useEffect(() => {
+    if (session?.user){
+    const createUser = async () => {
+      try {
+        const userData = {
+          name: session?.user?.name || "-",
+          email:session?.user?.email || "-",
+          image: session?.user?.image || "-"
+        };
+        const result = await CreateUser(userData);
+        console.log('User created successfully:', result);
+      } catch (error) {
+        console.error('Error in useEffect while creating user:', error);
+      }
+    };
+
+    createUser();
+  }
+  }, [session]);
+  
 
   return (
     <div
-      className="flex flex-col h-full w-full bg-white"
+      className="flex flex-col h-full  bg-white"
       style={{ height: "calc(100vh - 72px)" }}
     >
       <div className="flex flex-col flex-1 items-center justify-center overflow-auto p-4">
@@ -82,7 +105,7 @@ const Home = () => {
             </div>
           </div>
         )}
-        <div className="flex flex-col flex-1 w-full max-w-xl mt-4 mb-16 overflow-y-auto p-4 rounded-xl">
+        <div className="flex flex-col flex-1 max-w-xl mt-1 mb-4 overflow-y-auto p-4 rounded-xl">
           {messages.map((message, index) => (
             <div
               key={index}
