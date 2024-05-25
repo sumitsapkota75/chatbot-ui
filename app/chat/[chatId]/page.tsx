@@ -59,7 +59,7 @@ const Chat = () => {
         const conversation = {
           email: session?.user?.email || "-",
           messages: messages,
-          conversationId: conversationID
+          conversation_id: conversationID
         }
         await SaveConversation(conversation)
       }
