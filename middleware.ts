@@ -1,9 +1,9 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
-const protectedRoutes = ["/home"];
+const protectedRoutes = ["/chat"];
 const loginPath = "/auth/login";
-const homepagePath = "/home"
+const homepagePath = "/chat"
 
 export default async function AuthMiddleware(req: NextRequest) {
   const url = req.nextUrl;
