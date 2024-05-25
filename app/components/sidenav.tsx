@@ -4,10 +4,11 @@ import { IoCreateOutline } from "react-icons/io5";
 import { useSession } from "next-auth/react";
 import { GetConversation, IData, IMessage } from "@/services/user";
 import { GenerateChatID } from "@/lib/uuid";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const SideNav = () => {
   const router = useRouter();
+  const pathname = usePathname()
   const { data: session } = useSession();
   const [conversations, setConversations] = useState<any[]>([]);
 
@@ -20,24 +21,13 @@ const SideNav = () => {
       getConversations();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session]);
-
-  // const test = () => {
-  //   const result = conversations?.map((item)=>{
-  //     return item
-  //   })
-  //   console.log(result);
-  // }
-
-  // test()
+  }, [session,pathname]);
   
   const createNewChat = () => {
     const conversation_id = GenerateChatID();
-    router.push(`/chat/${conversation_id}&newChat=true`);
+    router.push(`/chat/${conversation_id}`);
   };
 
-  console.log("type",typeof(conversations))
-  console.log("conversation", conversations);
   
   return (
     <div
@@ -61,6 +51,7 @@ const SideNav = () => {
           conversations?.map((conversation, index) => (
             <div
               key={index}
+              onClick={()=>router.push(`/chat/${conversation.conversation_id}`)}
               className="menu-item mb-2 p-2 rounded hover:bg-gray-400 cursor-pointer"
             >
                  <div key={index}>{conversation?.messages[0]?.text}</div>
