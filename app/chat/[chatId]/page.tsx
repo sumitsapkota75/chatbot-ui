@@ -10,6 +10,7 @@ import Loader from "@/app/components/loader";
 import { CreateUser, IUser, SaveConversation } from "@/services/user";
 import {usePathname} from "next/navigation";
 import { GetUUIDFromUrl } from "@/lib/uuid";
+import FormattedMarkdown from "@/services/formattedMarkdown";
 
 
 interface Message {
@@ -119,7 +120,7 @@ const Chat = () => {
                     : "bg-gray-200 text-left"
                 } animate-slide-in`}
               >
-                {message.text}
+                <FormattedMarkdown>{message.text}</FormattedMarkdown>
               </div>
             </div>
           ))}
