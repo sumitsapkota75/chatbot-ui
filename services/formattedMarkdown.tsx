@@ -1,7 +1,7 @@
 import React from 'react';
 import Markdown from 'react-markdown';
 
-const FormattedMarkdown = ({ children }) => {
+const FormattedMarkdown = ({ children }: any) => {
   return (
     <Markdown>{children}</Markdown>
   );

@@ -2,16 +2,17 @@
 import React, { useEffect, useState } from "react";
 import { IoCreateOutline } from "react-icons/io5";
 import { useSession } from "next-auth/react";
-import { GetConversation, IData, IMessage } from "@/services/user";
+import { GetConversation } from "@/services/user";
 import { GenerateChatID } from "@/lib/uuid";
 import { usePathname, useRouter } from "next/navigation";
+import { ThreeDots } from "react-loader-spinner";
+import { BsThreeDots } from "react-icons/bs";
 
 const SideNav = () => {
   const router = useRouter();
-  const pathname = usePathname()
   const { data: session } = useSession();
   const [conversations, setConversations] = useState<any[]>([]);
-  const [newChat, setnewChat] = useState(false)
+  const [newChat, setnewChat] = useState(false);
 
   useEffect(() => {
     if (session?.user) {
@@ -22,8 +23,8 @@ const SideNav = () => {
       getConversations();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session,newChat]);
-  
+  }, [session, newChat]);
+
   // const createNewChat = async() => {
   //   setnewChat(true)
   //   const conversation_id = GenerateChatID();
@@ -32,7 +33,7 @@ const SideNav = () => {
   //     const result = await GetConversation(session?.user?.email || "");
   //     setConversations(result.data);
   //   }
-  //   setnewChat(false); 
+  //   setnewChat(false);
   // };
   const createNewChat = async () => {
     setnewChat(true); // Set flag for new chat creation
@@ -49,10 +50,9 @@ const SideNav = () => {
     setnewChat(false); // Reset flag after refetch
   };
 
-  
   return (
     <div
-      className="h-screen w-60 bg-gray-200 p-4 overflow-y-auto"
+      className="h-screen w-60 bg-gray-100 p-4 overflow-y-auto border-t-2"
       style={{ height: "calc(100vh - 72px)" }}
     >
       <div className="menu-items">
@@ -72,10 +72,12 @@ const SideNav = () => {
           conversations?.map((conversation, index) => (
             <div
               key={index}
-              onClick={()=>router.push(`/chat/${conversation.conversation_id}`)}
-              className="menu-item mb-2 p-2 rounded hover:bg-gray-400 cursor-pointer"
+              onClick={() =>
+                router.push(`/chat/${conversation.conversation_id}`)
+              }
+              className="flex content-between menu-item mb-2 p-2 rounded hover:bg-gray-400 cursor-pointer"
             >
-                 <div key={index}>{conversation?.messages[0]?.text}</div>
+              <div key={index}>{conversation?.messages[0]?.text}</div>
             </div>
           ))}
       </div>

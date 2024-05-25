@@ -98,7 +98,7 @@ const Chat = () => {
             </div>
           </div>
         )}
-        <div className="flex flex-col flex-1 max-w-xl mt-1 mb-4 overflow-y-auto p-4 rounded-xl">
+        <div className="message-container flex flex-col flex-1 min-w-[75%] max-w-[75%] mt-0 mb-4 overflow-y-auto p-4 pt-0 rounded-xl">
           {messages.map((message, index) => (
             <div
               key={index}
