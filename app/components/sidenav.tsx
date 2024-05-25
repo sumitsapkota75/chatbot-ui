@@ -11,6 +11,7 @@ const SideNav = () => {
   const pathname = usePathname()
   const { data: session } = useSession();
   const [conversations, setConversations] = useState<any[]>([]);
+  const [newChat, setnewChat] = useState(false)
 
   useEffect(() => {
     if (session?.user) {
@@ -21,11 +22,31 @@ const SideNav = () => {
       getConversations();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session,pathname]);
+  }, [session,newChat]);
   
-  const createNewChat = () => {
+  // const createNewChat = async() => {
+  //   setnewChat(true)
+  //   const conversation_id = GenerateChatID();
+  //   router.push(`/chat/${conversation_id}`);
+  //   if (session?.user) {
+  //     const result = await GetConversation(session?.user?.email || "");
+  //     setConversations(result.data);
+  //   }
+  //   setnewChat(false); 
+  // };
+  const createNewChat = async () => {
+    setnewChat(true); // Set flag for new chat creation
+
     const conversation_id = GenerateChatID();
     router.push(`/chat/${conversation_id}`);
+
+    // Refetch conversations after creating a new chat
+    if (session?.user) {
+      const result = await GetConversation(session?.user?.email || "");
+      setConversations(result.data);
+    }
+
+    setnewChat(false); // Reset flag after refetch
   };
 
   
@@ -47,7 +68,7 @@ const SideNav = () => {
         <div className="info text-xs mb-2 text-gray-600">
           Previous Conversations
         </div>
-        {conversations.length >0 &&
+        {conversations &&
           conversations?.map((conversation, index) => (
             <div
               key={index}

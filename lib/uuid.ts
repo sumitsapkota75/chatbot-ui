@@ -6,18 +6,16 @@ export function GenerateChatID() {
   return uuidv4();
 }
 
-// Function to validate a UUID
-export const isValidUUID = (uuid: any) => {
-  const uuidRegex =
-    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-  return uuidRegex.test(uuid);
-};
-
 export const GetUUIDFromUrl = (pathname:string) => {
-  const match = pathname.match(/\/chat\/([0-9a-fA-F-]+)&/);
-  if (match && isValidUUID(match[1])) {
-    const uid = match[1];
-    console.log({ uid });
-    return match[1];
+  // Split the pathname by '/'
+  const parts = pathname.split('/');
+  // Find the index of 'chat' in the array
+  const index = parts.indexOf('chat');
+  // If 'chat' exists and the index of 'chat' + 1 is less than the length of the parts array
+  if (index !== -1 && index + 1 < parts.length) {
+    // Return the UUID after 'chat'
+    return parts[index + 1];
   }
+  // If 'chat' doesn't exist or there's no UUID after it, return null
+  return null;
 };

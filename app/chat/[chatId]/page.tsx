@@ -9,7 +9,7 @@ import { chat } from "@/services/chat";
 import Loader from "@/app/components/loader";
 import { CreateUser, IUser, SaveConversation } from "@/services/user";
 import {usePathname} from "next/navigation";
-import { GetUUIDFromUrl, isValidUUID } from "@/lib/uuid";
+import { GetUUIDFromUrl } from "@/lib/uuid";
 
 
 interface Message {
@@ -34,7 +34,8 @@ const Chat = () => {
 
 
   const handleSend = async () => {
-    const conversationID = GetUUIDFromUrl(pathname)
+    const conversationID = await pathname && GetUUIDFromUrl(pathname)
+
     const data = {
       text: input,
     };
@@ -55,10 +56,11 @@ const Chat = () => {
           ...prevMessages,
           botResponse,
         ]);
+        const updatedMessages = [...messages, userMessage, botResponse];
         // save the updated response in the database
         const conversation = {
           email: session?.user?.email || "-",
-          messages: messages,
+          messages: updatedMessages,
           conversation_id: conversationID
         }
         await SaveConversation(conversation)
@@ -73,29 +75,6 @@ const Chat = () => {
 
   const userImage = session?.user?.image || "/default-user.png";
   const hasConversationStarted = messages.length > 0;
-  
-  useEffect(() => {
-    if (session?.user){
-    const createUser = async () => {
-      try {
-        const userData = {
-          name: session?.user?.name || "-",
-          email:session?.user?.email || "-",
-          image: session?.user?.image || "-"
-        };
-        const result = await CreateUser(userData);
-        console.log('User created successfully:', result);
-      } catch (error) {
-        console.error('Error in useEffect while creating user:', error);
-      }
-    };
-
-    createUser();
-  }
-  }, [session]);
-
-
-
 
   return (
     <div

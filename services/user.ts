@@ -14,7 +14,11 @@ export interface IMessage{
 export interface IConversation {
     email: string
     messages: IMessage[]
-    conversationId: any
+    conversation_id: any
+}
+
+export interface IData {
+    data: IConversation[]
 }
 
 const BASE_URL = "http://localhost:8080"
@@ -30,7 +34,6 @@ export const SaveConversation = async (convoData: IConversation)=> {
 }
 
 export const GetConversation = async (email: string)=> {
-    const response = await axios.post(`${BASE_URL}/conversation?email=${email}`)
-    console.log({response})
-    return response
+    const response = await axios.get(`${BASE_URL}/get-conversation?email=${email}`)
+    return response.data
 }
