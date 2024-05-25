@@ -3,13 +3,13 @@ import React from 'react';
 import { signIn } from 'next-auth/react';
 import { RiGoogleLine } from 'react-icons/ri';
 import Image from 'next/image';
+import { GenerateChatID } from '@/lib/uuid';
 
 const Login = () => {
   const handleLogin = async () => {
+    const conversation_id = GenerateChatID()
     await signIn("google", {
-      callbackUrl: "/home"
-    }).then((data)=>{
-      console.log({data})
+      callbackUrl: `/chat/${conversation_id}`
     });
   };
 

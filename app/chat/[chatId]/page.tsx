@@ -3,11 +3,13 @@
 import { useState, useEffect, useRef } from "react";
 import { IoSend } from "react-icons/io5";
 import Image from "next/image";
-import "../globals.css";
+import "../../globals.css";
 import { useSession } from "next-auth/react";
 import { chat } from "@/services/chat";
-import Loader from "@/components/loader";
-import { CreateUser, IUser } from "@/services/user";
+import Loader from "@/app/components/loader";
+import { CreateUser, IUser, SaveConversation } from "@/services/user";
+import {usePathname} from "next/navigation";
+import { GetUUIDFromUrl, isValidUUID } from "@/lib/uuid";
 
 
 interface Message {
@@ -15,13 +17,13 @@ interface Message {
   isUser: boolean;
 }
 
-const Home = () => {
+const Chat = () => {
   const { data: session } = useSession();
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
+  const pathname = usePathname()
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -30,10 +32,13 @@ const Home = () => {
     scrollToBottom();
   }, [messages]);
 
+
   const handleSend = async () => {
+    const conversationID = GetUUIDFromUrl(pathname)
     const data = {
       text: input,
     };
+    
     try {
       if (input.trim()) {
         const userMessage: Message = { text: input, isUser: true };
@@ -50,6 +55,13 @@ const Home = () => {
           ...prevMessages,
           botResponse,
         ]);
+        // save the updated response in the database
+        const conversation = {
+          email: session?.user?.email || "-",
+          messages: messages,
+          conversationId: conversationID
+        }
+        await SaveConversation(conversation)
       }
     } catch (error) {
       console.log("Error occured.", error);
@@ -59,7 +71,6 @@ const Home = () => {
     }
   };
 
-  console.log({session})
   const userImage = session?.user?.image || "/default-user.png";
   const hasConversationStarted = messages.length > 0;
   
@@ -82,7 +93,9 @@ const Home = () => {
     createUser();
   }
   }, [session]);
-  
+
+
+
 
   return (
     <div
@@ -157,4 +170,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Chat;

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../globals.css";
-import Header from "@/components/header";
-import SideNav from "@/components/sidenav";
+import Header from "@/app/components/header";
+import SideNav from "@/app/components/sidenav";
 import NextAuthSessionProvider from "@/context/sessionContext";
 import { getServerSession } from "next-auth";
 import { useRouter } from "next/router";
