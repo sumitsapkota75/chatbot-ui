@@ -151,7 +151,7 @@ const Chat = () => {
         <input
           type="text"
           className="rounded outline-none w-full p-1"
-          placeholder="Message ChatGPT"
+          placeholder="Message Codex"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => {
@@ -163,7 +163,7 @@ const Chat = () => {
         </button>
       </div>
       <div className="text-xs text-gray-500 text-center mt-3">
-        ChatGPT can make mistakes. Check important info.
+        Codex can make mistakes. Check important info.
       </div>
     </div>
   );

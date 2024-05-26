@@ -11,7 +11,7 @@ export default async function LoginLayout({
   const session = await getServerSession();
   return (
     <html lang="en">
-      <body className="h-screen">
+      <body className="h-screen ">
       <TanstackProvider>
       <NextAuthSessionProvider session={session}>
           <main>{children}</main>

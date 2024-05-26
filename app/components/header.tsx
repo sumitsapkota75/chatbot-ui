@@ -17,7 +17,7 @@ const Header = () => {
   return (
     <div className='bg-gray-100 min-h-14 flex items-center justify-between p-4 shadow-lg'>
       <div className='flex flex-row text-base items-center font-bold h-10 min-w-12 hover:bg-gray-200 hover:cursor-pointer rounded-lg p-4'>
-        ChatGPT 3.5
+      Codex 3.5
         <MdOutlineKeyboardArrowDown color='gray' height={4} className='mx-2' />
       </div>
       {session?.user ? (
