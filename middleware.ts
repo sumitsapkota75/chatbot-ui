@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import { GenerateChatID } from "./lib/uuid";
 
 const protectedRoutes = ["/chat"];
 const loginPath = "/auth/login";
@@ -19,6 +20,19 @@ export default async function AuthMiddleware(req: NextRequest) {
   if (url.pathname === loginPath && isLoggedIn) {
     return NextResponse.redirect(new URL(homepagePath, req.url));
   }
+  if (url.pathname === "/" && isLoggedIn) {
+    const chatID= GenerateChatID()
+    const chatPageURL = `/chat/${chatID}`
+    
+    return NextResponse.redirect(new URL(chatPageURL, req.url));
+  }
+
+  // Redirect unauthenticated users from "/" to "/auth/login"
+  if (url.pathname === "/" && !isLoggedIn) {
+    return NextResponse.redirect(new URL(loginPath, req.url));
+  }
+
+
 
   // Handle protected routes
   if (isProtectedRoute && !isLoggedIn) {
