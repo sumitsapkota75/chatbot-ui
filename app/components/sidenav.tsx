@@ -3,15 +3,15 @@ import React, { useEffect, useState } from "react";
 import { IoCreateOutline } from "react-icons/io5";
 import { useSession } from "next-auth/react";
 import { GetConversation } from "@/services/user";
-import { GenerateChatID } from "@/lib/uuid";
-import { useRouter } from "next/navigation";
+import { GenerateChatID, GetUUIDFromUrl } from "@/lib/uuid";
+import { usePathname, useRouter } from "next/navigation";
 
 const SideNav = () => {
   const router = useRouter();
   const { data: session } = useSession();
   const [conversations, setConversations] = useState<any[]>([]);
   const [newChat, setnewChat] = useState(false);
-
+  const pathname = usePathname();
   useEffect(() => {
     if (session?.user) {
       const getConversations = async () => {
@@ -37,7 +37,7 @@ const SideNav = () => {
 
     setnewChat(false); // Reset flag after refetch
   };
-
+  const chat_id = GetUUIDFromUrl(pathname);
   return (
     <div
       className="h-screen w-60 bg-gray-100 p-4 overflow-y-auto border-t-2"
@@ -63,7 +63,11 @@ const SideNav = () => {
               onClick={() =>
                 router.push(`/chat/${conversation.conversation_id}`)
               }
-              className="flex content-between menu-item mb-2 p-2 rounded hover:bg-gray-400 cursor-pointer"
+              className={`flex content-between menu-item mb-2 p-2 rounded hover:bg-gray-400 cursor-pointer ${
+                chat_id == conversation?.conversation_id
+                  ? "bg-gray-200 text-gray-800 font-bold"
+                  : "text-gray-600"
+              }`}
             >
               <div key={index}>{conversation?.messages[0]?.text}</div>
             </div>
