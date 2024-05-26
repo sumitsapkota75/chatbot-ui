@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { GetConversation } from "@/services/user";
 import { GenerateChatID, GetUUIDFromUrl } from "@/lib/uuid";
 import { usePathname, useRouter } from "next/navigation";
+import { BsThreeDots } from "react-icons/bs";
 
 const SideNav = () => {
   const router = useRouter();
@@ -63,13 +64,16 @@ const SideNav = () => {
               onClick={() =>
                 router.push(`/chat/${conversation.conversation_id}`)
               }
-              className={`flex content-between menu-item mb-2 p-2 rounded hover:bg-gray-400 cursor-pointer ${
+              className={`flex items-center justify-between text-left menu-item mb-2 p-2 rounded hover:bg-gray-400 cursor-pointer ${
                 chat_id == conversation?.conversation_id
                   ? "bg-gray-200 text-gray-800 font-bold"
-                  : "text-gray-600"
+                  : "text-gray-700"
               }`}
             >
               <div key={index}>{conversation?.messages[0]?.text}</div>
+              <div>
+                <BsThreeDots />
+              </div>
             </div>
           ))}
       </div>
