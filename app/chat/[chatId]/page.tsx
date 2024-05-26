@@ -7,11 +7,15 @@ import "../../globals.css";
 import { useSession } from "next-auth/react";
 import { chat } from "@/services/chat";
 import Loader from "@/app/components/loader";
-import { CreateUser, IUser, SaveConversation } from "@/services/user";
-import {usePathname} from "next/navigation";
+import {
+  CreateUser,
+  GetConversationByID,
+  IUser,
+  SaveConversation,
+} from "@/services/user";
+import { usePathname } from "next/navigation";
 import { GetUUIDFromUrl } from "@/lib/uuid";
 import FormattedMarkdown from "@/services/formattedMarkdown";
-
 
 interface Message {
   text: string;
@@ -24,7 +28,9 @@ const Chat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const pathname = usePathname()
+  const pathname = usePathname();
+  const pathnameRef = useRef("");
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -33,38 +39,31 @@ const Chat = () => {
     scrollToBottom();
   }, [messages]);
 
-
   const handleSend = async () => {
-    const conversationID = await pathname && GetUUIDFromUrl(pathname)
+    const conversationID = (await pathname) && GetUUIDFromUrl(pathname);
 
     const data = {
       text: input,
     };
-    
+
     try {
       if (input.trim()) {
         const userMessage: Message = { text: input, isUser: true };
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          userMessage,
-        ]);
+        setMessages((prevMessages) => [...prevMessages, userMessage]);
         setInput("");
         setLoading(true);
         const response = await chat(data);
         const botResponse: Message = { text: response.response, isUser: false };
-        setLoading(false)
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          botResponse,
-        ]);
+        setLoading(false);
+        setMessages((prevMessages) => [...prevMessages, botResponse]);
         const updatedMessages = [...messages, userMessage, botResponse];
         // save the updated response in the database
         const conversation = {
           email: session?.user?.email || "-",
           messages: updatedMessages,
-          conversation_id: conversationID
-        }
-        await SaveConversation(conversation)
+          conversation_id: conversationID,
+        };
+        await SaveConversation(conversation);
       }
     } catch (error) {
       console.log("Error occured.", error);
@@ -73,9 +72,29 @@ const Chat = () => {
       setLoading(false);
     }
   };
+  const currentPath = pathname;
+  useEffect(() => {
+    const fetchOldChats = async () => {
+      if (currentPath) {
+        const conversationID = GetUUIDFromUrl(pathname);
+        console.log({conversationID})
+        if (conversationID) {
+          try {
+            const conversation = await GetConversationByID(conversationID);
+            setMessages(conversation.data.messages)
+            console.log(conversation);
+          } catch (error) {
+            console.error("Error fetching conversation:", error);
+          }
+        }
+      }
+    };
+
+    fetchOldChats(); // Call the async function immediately
+  }, [currentPath, pathname]);
 
   const userImage = session?.user?.image || "/default-user.png";
-  const hasConversationStarted = messages.length > 0;
+  const hasConversationStarted = messages?.length > 0;
 
   return (
     <div
@@ -125,7 +144,7 @@ const Chat = () => {
             </div>
           ))}
           <div ref={messagesEndRef} />
-          {loading && <Loader/>}
+          {loading && <Loader />}
         </div>
       </div>
       <div className="flex justify-center items-center max-w-xl w-full mx-auto bg-white p-4 rounded-xl border shadow-md">

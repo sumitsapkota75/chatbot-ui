@@ -4,9 +4,7 @@ import { IoCreateOutline } from "react-icons/io5";
 import { useSession } from "next-auth/react";
 import { GetConversation } from "@/services/user";
 import { GenerateChatID } from "@/lib/uuid";
-import { usePathname, useRouter } from "next/navigation";
-import { ThreeDots } from "react-loader-spinner";
-import { BsThreeDots } from "react-icons/bs";
+import { useRouter } from "next/navigation";
 
 const SideNav = () => {
   const router = useRouter();
@@ -25,16 +23,6 @@ const SideNav = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session, newChat]);
 
-  // const createNewChat = async() => {
-  //   setnewChat(true)
-  //   const conversation_id = GenerateChatID();
-  //   router.push(`/chat/${conversation_id}`);
-  //   if (session?.user) {
-  //     const result = await GetConversation(session?.user?.email || "");
-  //     setConversations(result.data);
-  //   }
-  //   setnewChat(false);
-  // };
   const createNewChat = async () => {
     setnewChat(true); // Set flag for new chat creation
 

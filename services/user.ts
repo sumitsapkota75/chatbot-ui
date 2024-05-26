@@ -37,3 +37,8 @@ export const GetConversation = async (email: string)=> {
     const response = await axios.get(`${BASE_URL}/get-conversation?email=${email}`)
     return response.data
 }
+
+export const GetConversationByID = async (conversation_id: string)=> {
+    const response = await axios.get(`${BASE_URL}/single-chat/${conversation_id}`)
+    return response.data
+}
