@@ -8,9 +8,7 @@ import { useSession } from "next-auth/react";
 import { chat } from "@/services/chat";
 import Loader from "@/app/components/loader";
 import {
-  CreateUser,
   GetConversationByID,
-  IUser,
   SaveConversation,
 } from "@/services/user";
 import { usePathname } from "next/navigation";
@@ -29,7 +27,6 @@ const Chat = () => {
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
-  const pathnameRef = useRef("");
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -101,7 +98,7 @@ const Chat = () => {
       className="flex flex-col h-full  bg-white"
       style={{ height: "calc(100vh - 72px)" }}
     >
-      <div className="flex flex-col flex-1 items-center justify-center overflow-auto p-4">
+      <div className="flex flex-col flex-1 items-center justify-center overflow-auto p-4 pb-1">
         {!hasConversationStarted && (
           <div className="flex flex-col items-center">
             <div>
@@ -147,11 +144,11 @@ const Chat = () => {
           {loading && <Loader />}
         </div>
       </div>
-      <div className="flex justify-center items-center max-w-xl w-full mx-auto bg-white p-4 rounded-xl border shadow-md">
+      <div className="flex justify-center items-center max-w-xl w-full mx-auto bg-white p-4 rounded-full border shadow-md">
         <input
           type="text"
           className="rounded outline-none w-full p-1"
-          placeholder="Message Codex"
+          placeholder="Chat with Codex..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => {

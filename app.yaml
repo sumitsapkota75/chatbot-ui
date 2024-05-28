@@ -1,0 +1,8 @@
+runtime: nodejs18
+
+service: chatbot-ui
+
+handlers:
+  - url: /.*
+    secure: always
+    script: auto

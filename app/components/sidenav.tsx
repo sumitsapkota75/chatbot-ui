@@ -49,7 +49,7 @@ const SideNav = () => {
           onClick={createNewChat}
           className="menu-item flex flex-row mb-4 p-2 rounded hover:bg-gray-400 cursor-pointer"
         >
-          <div className="font-normal">Create a new chat</div>
+          <div className="font-semibold">Create a new chat</div>
           <div className="new-conversation flex justify-center items-center mx-4 min-h-5 min-w-5 rounded hover:cursor-pointer">
             <IoCreateOutline />
           </div>
