@@ -102,7 +102,7 @@ const Chat = () => {
           <div className="flex flex-col items-center">
             <div>
               <Image
-                src="/chatgpt.png"
+                src="/gemini.svg"
                 alt="chatgpt-image"
                 width={60}
                 height={60}
