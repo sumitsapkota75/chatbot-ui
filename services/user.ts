@@ -21,7 +21,7 @@ export interface IData {
     data: IConversation[]
 }
 
-const BASE_URL = "http://localhost:8080"
+const BASE_URL = process.env.NEXT_BASE_URL
 
 export const CreateUser = async (userData: IUser)=> {
     const response = await axios.post(`${BASE_URL}/user`, userData)
