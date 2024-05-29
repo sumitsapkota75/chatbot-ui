@@ -21,7 +21,7 @@ export interface IData {
     data: IConversation[]
 }
 
-const BASE_URL = process.env.NEXT_BASE_URL
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 
 export const CreateUser = async (userData: IUser)=> {
     const response = await axios.post(`${BASE_URL}/user`, userData)

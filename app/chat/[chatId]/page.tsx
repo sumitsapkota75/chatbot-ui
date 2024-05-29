@@ -74,7 +74,6 @@ const Chat = () => {
     const fetchOldChats = async () => {
       if (currentPath) {
         const conversationID = GetUUIDFromUrl(pathname);
-        console.log({conversationID})
         if (conversationID) {
           try {
             const conversation = await GetConversationByID(conversationID);
@@ -123,8 +122,8 @@ const Chat = () => {
               }`}
             >
               <Image
-                src={message.isUser ? userImage : "/chatgpt.png"}
-                alt={message.isUser ? "user-image" : "chatgpt-image"}
+                src={message.isUser ? userImage : "/gemini.svg"}
+                alt={message.isUser ? "user-image" : "gemini-image"}
                 width={40}
                 height={40}
                 className="rounded-full mr-2"
